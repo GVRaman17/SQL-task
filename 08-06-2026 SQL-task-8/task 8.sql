@@ -1,0 +1,13 @@
+use studentdb;
+select name,department,salary from employees where salary > (select avg(salary) from employees);
+create table customers1 (customer_id int primary key,customer_name varchar(50));
+create table orders (order_id int primary key,customer_id int,order_amount decimal(10,2),foreign key (customer_id) references customers1(customer_id));
+create table products (product_id int primary key,product_name varchar(50),price decimal(10,2));
+insert into customers1 values(1, 'arun'),(2, 'bala'),(3, 'charan');
+insert into orders values(101, 1, 5000),(102, 1, 3000),(103, 2, 7000);
+insert into products values(1, 'laptop', 50000),(2, 'mouse', 500),(3, 'keyboard', 1500),(4, 'monitor', 12000);
+select * from products where price > (select min(price) from products);
+select * from customers1 where customer_id in (select customer_id from orders);
+select customer_id c,customer_name, (select count(*) from orders o where c.customer_id=o.customer_id) as order_count from customers1 c;
+select name,department,salary from employees e1 where salary=(select max(salary) from employees e2 where e1.department=e2.department);
+select * from products where exists (select * from products);
