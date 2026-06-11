@@ -1,0 +1,15 @@
+use studentdb;
+select e.* from employees e where salary>(select avg(salary) from employees where department = e.department) order by department desc;
+create table customer (id int primary key,name varchar(20));
+create table orders1(cust_id int,pr_id int);
+create table product(pr_id int primary key,pr_name varchar(20),price int);
+insert into customer values(1,'venkat'),(2,'sadham'),(3,'shanmuga');
+insert into orders1 values (1,101),(1,102),(3,102),(3,103),(2,103),(1,103),(3,103);
+insert into product values (101,'laptop',300),(102,'phone',200),(103,'charger',100);
+select c.* from customer c where 2<(select count(cust_id) as orders2 from orders1 o where c.id=o.cust_id);
+select * from product where price=(select max(price) from product);
+select *,(select sum(p.price) from orders1 o join product p on p.pr_id=o.pr_id where id=o.cust_id) as total_amount from customer c;
+CREATE TABLE employees4 (emp_id INT PRIMARY KEY,emp_name VARCHAR(50),salary INT,manager_id INT);
+INSERT INTO employees4 VALUES(1, 'John', 90000, NULL),(2, 'Alice', 70000, 1),(3, 'Bob', 95000, 1),(4, 'Carol', 60000, 2),(5, 'David', 80000, 2);
+select * from employees4 e where e.salary > (select e1.salary from employees4 e1 where e1.emp_id=e.manager_id);
+select * from product p where exists (select 1 from orders1 o where o.pr_id=p.pr_id);
